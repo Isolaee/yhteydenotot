@@ -1,7 +1,7 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/growthrocket2/public_html/wp-content/plugins/yhteydenotot/
+    - export DEPLOYPATH=/home/growthrocket/public_html/wp-content/plugins/yhteydenotot/
     - /bin/mkdir -p $DEPLOYPATH
     - /bin/mkdir -p $DEPLOYPATH/templates/myaccount
     - /bin/cp yhteydenotot.php $DEPLOYPATH
