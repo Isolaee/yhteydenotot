@@ -16,7 +16,7 @@ class Yhteydenotot_Endpoint {
     public function __construct() {
         add_action('init', [$this, 'add_endpoint']);
         add_filter('woocommerce_account_menu_items', [$this, 'add_menu_item']);
-        add_action('woocommerce_account_yhteydenotot_endpoint', [$this, 'endpoint_content']);
+        add_action('woocommerce_account_yhteydenotot_endpoint', [$this, 'endpoint_content'], 20);
         add_filter('woocommerce_get_query_vars', [$this, 'add_query_vars']);
     }
 
