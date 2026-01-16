@@ -15,7 +15,7 @@ class Yhteydenotot_Endpoint {
 
     public function __construct() {
         add_action('init', [$this, 'add_endpoint']);
-        add_filter('woocommerce_account_menu_items', [$this, 'add_menu_item']);
+        // Don't add menu item here - let theme handle it
         add_action('woocommerce_account_yhteydenotot_endpoint', [$this, 'endpoint_content']);
         add_filter('woocommerce_get_query_vars', [$this, 'add_query_vars']);
         add_filter('woocommerce_locate_template', [$this, 'locate_template'], 10, 3);
@@ -34,32 +34,6 @@ class Yhteydenotot_Endpoint {
     public function add_query_vars($vars) {
         $vars['yhteydenotot'] = 'yhteydenotot';
         return $vars;
-    }
-
-    /**
-     * Add menu item to My Account menu
-     */
-    public function add_menu_item($items) {
-        $new_items = [];
-
-        foreach ($items as $key => $value) {
-            $new_items[$key] = $value;
-
-            if ($key === 'dashboard') {
-                $new_items['yhteydenotot'] = __('Yhteydenotot', 'yhteydenotot');
-            }
-        }
-
-        if (!isset($new_items['yhteydenotot'])) {
-            $logout = isset($new_items['customer-logout']) ? $new_items['customer-logout'] : null;
-            unset($new_items['customer-logout']);
-            $new_items['yhteydenotot'] = __('Yhteydenotot', 'yhteydenotot');
-            if ($logout) {
-                $new_items['customer-logout'] = $logout;
-            }
-        }
-
-        return $new_items;
     }
 
     /**
