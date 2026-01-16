@@ -65,9 +65,22 @@ class Yhteydenotot_Endpoint {
      * Endpoint content - display shortcodes
      */
     public function endpoint_content() {
-        $content = '[cf7-views id="2369"]';
-        $content .= '[cf7-views id="2374"]';
-        echo apply_filters('the_content', $content);
+        global $shortcode_tags;
+
+        // Check if shortcode exists
+        if (isset($shortcode_tags['cf7-views'])) {
+            echo do_shortcode('[cf7-views id="2369"]');
+            echo do_shortcode('[cf7-views id="2374"]');
+        } else {
+            // Fallback: render via WP_Post object simulation
+            $post = new stdClass();
+            $post->post_content = '[cf7-views id="2369"][cf7-views id="2374"]';
+            $post->ID = 0;
+
+            setup_postdata($post);
+            echo do_shortcode($post->post_content);
+            wp_reset_postdata();
+        }
     }
 
     /**
