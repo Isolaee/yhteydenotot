@@ -65,8 +65,9 @@ class Yhteydenotot_Endpoint {
      * Endpoint content - display shortcodes
      */
     public function endpoint_content() {
-        echo do_shortcode('[cf7-views id="2369"]');
-        echo do_shortcode('[cf7-views id="2374"]');
+        $content = '[cf7-views id="2369"]';
+        $content .= '[cf7-views id="2374"]';
+        echo apply_filters('the_content', $content);
     }
 
     /**
