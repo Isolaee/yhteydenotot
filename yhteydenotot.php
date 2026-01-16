@@ -14,10 +14,9 @@ if (!defined('ABSPATH')) {
 class Yhteydenotot_Endpoint {
 
     public function __construct() {
-        add_action('init', [$this, 'add_endpoint']);
-        // Don't add menu item here - let theme handle it
+        add_action('init', [$this, 'add_endpoint'], 0);
+        add_filter('query_vars', [$this, 'add_query_vars'], 0);
         add_action('woocommerce_account_yhteydenotot_endpoint', [$this, 'endpoint_content']);
-        add_filter('woocommerce_get_query_vars', [$this, 'add_query_vars']);
         add_filter('woocommerce_locate_template', [$this, 'locate_template'], 10, 3);
     }
 
@@ -32,7 +31,7 @@ class Yhteydenotot_Endpoint {
      * Add query vars
      */
     public function add_query_vars($vars) {
-        $vars['yhteydenotot'] = 'yhteydenotot';
+        $vars[] = 'yhteydenotot';
         return $vars;
     }
 
