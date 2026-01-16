@@ -16,8 +16,9 @@ class Yhteydenotot_Endpoint {
     public function __construct() {
         add_action('init', [$this, 'add_endpoint']);
         add_filter('woocommerce_account_menu_items', [$this, 'add_menu_item']);
-        add_action('woocommerce_account_yhteydenotot_endpoint', [$this, 'endpoint_content'], 20);
+        add_action('woocommerce_account_yhteydenotot_endpoint', [$this, 'endpoint_content']);
         add_filter('woocommerce_get_query_vars', [$this, 'add_query_vars']);
+        add_filter('woocommerce_locate_template', [$this, 'locate_template'], 10, 3);
     }
 
     /**
@@ -62,25 +63,23 @@ class Yhteydenotot_Endpoint {
     }
 
     /**
-     * Endpoint content - display shortcodes
+     * Locate plugin template
+     */
+    public function locate_template($template, $template_name, $template_path) {
+        if ($template_name === 'myaccount/yhteydenotot.php') {
+            $plugin_template = plugin_dir_path(__FILE__) . 'templates/' . $template_name;
+            if (file_exists($plugin_template)) {
+                return $plugin_template;
+            }
+        }
+        return $template;
+    }
+
+    /**
+     * Endpoint content - load template
      */
     public function endpoint_content() {
-        global $shortcode_tags;
-
-        // Check if shortcode exists
-        if (isset($shortcode_tags['cf7-views'])) {
-            echo do_shortcode('[cf7-views id="2369"]');
-            echo do_shortcode('[cf7-views id="2374"]');
-        } else {
-            // Fallback: render via WP_Post object simulation
-            $post = new stdClass();
-            $post->post_content = '[cf7-views id="2369"][cf7-views id="2374"]';
-            $post->ID = 0;
-
-            setup_postdata($post);
-            echo do_shortcode($post->post_content);
-            wp_reset_postdata();
-        }
+        wc_get_template('myaccount/yhteydenotot.php');
     }
 
     /**
